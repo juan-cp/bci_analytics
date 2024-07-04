@@ -27,9 +27,49 @@ MKT_CRM_ANALYTICS_TB.I_AI_sensibilidad_retornos_hist
 check sensibilidad:
 sel Ie_periodo_ref, ic_marca_sensibilidad, count(0) from MKT_CRM_ANALYTICS_TB.I_AI_sensibilidad_retornos_hist group by 1,2
 </pre>
-<pre><code class="language-html">
-<html>
-</html>
+<h3>QUERY PARA VER PERFILES INVERSIONISTA POR SEGMENTO</h3>
+<pre><code class="language-sql">
+with segmento as (
+    SELECT C.cli_rut, B.atb_fec_act, B.cnl_cod, B.atb_bnc ,
+        Case 
+        when B.atb_bnc IN ('PBP') and B.CNL_COD  IN ('470', '476', '477' , '478' , '746') then 'Preferencial Más'
+        when B.atb_bnc IN ('PBP') then 'Preferencial'
+        when B.atb_bnc IN ('PRE') then 'Premier'
+        when B.atb_bnc IN ('PP','PBU','PBM') then 'Clásico'
+        when B.atb_bnc IN ('PM','PME','PMR','PMN','PE','EPM','ME','PEQ') then 'PYME'
+        else NULL end as segmento
+        from EDW_SEMLAY_VW.CLI_ATB B
+        left join EDW_SEMLAY_VW.CLI C
+        on (b.cli_cic =c.cli_cic)
+        where c.cli_rut is not null
+        and c.cli_rut > 1000000
+        and c.cli_rut < 50000000
+), rutero as (
+    sel *
+    from MKT_CRM_ANALYTICS_TB.I_AI_rutero_clientes_integrado_inv_hist a
+    WHERE a.ic_banca = 'PERSONA' 
+    AND a.ie_rut < 50000000  
+    AND a.ie_rut > 1000000  
+    AND NOT(a.Ic_sub_banca = 'PYME') 
+    AND NOT(a.ic_tipo_cliente = 'PG')
+    AND a.Ie_periodo_ref=202403
+    AND a.Ie_tiene_inv=1
+    AND a.Id_aum_bci > 10000
+
+)
+sel tt.segmento, tt.Ic_perfil_inversionista, count(0) from (
+sel rutero.ie_rut, segmento.segmento, a.Ic_perfil_inversionista
+From rutero
+left join segmento
+on rutero.ie_rut = segmento.cli_rut
+left join 
+(sel * from 
+MKT_CRM_ANALYTICS_TB.I_ai_perfil_inversionista_hist 
+where Ie_periodo_ref=202403 
+) a
+on rutero.ie_rut = a.ie_rut
+) as tt
+group by 1,2
 </code></pre>
 
 
