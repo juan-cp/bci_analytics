@@ -8,8 +8,24 @@
 </head>
 <body>
 
-<h1>Ejemplo de Código con Prism.js</h1>
+<h1>Tablas</h1>
 
+Perfil Inversionista : MKT_CRM_ANALYTICS_TB.I_ai_perfil_inversionista_hist
+Caracterizacion : MKT_CRM_ANALYTICS_TB.I_AI_caracterizacion_clientes_inv_hist
+Rutero: MKT_CRM_ANALYTICS_TB.I_AI_rutero_clientes_integrado_inv_hist
+Perfil Riesgo: MKT_CRM_ANALYTICS_TB.I_ai_perfil_riesgo_clientes_inversiones_hist
+
+Sofisticacion:
+MKT_CRM_ANALYTICS_TB.I_ai_sofisticacion_tier_portfolio_hist
+MKT_CRM_ANALYTICS_TB.I_ai_sofisticacion_tier_encuesta_hist
+MKT_CRM_ANALYTICS_TB.I_ai_sofisticacion_inv
+
+Rentabilidades:
+MKT_CRM_ANALYTICS_TB.I_ai_rentabilidad_inv_cliente_hist
+MKT_CRM_ANALYTICS_TB.I_AI_sensibilidad_retornos_hist
+
+check sensibilidad:
+sel Ie_periodo_ref, ic_marca_sensibilidad, count(0) from MKT_CRM_ANALYTICS_TB.I_AI_sensibilidad_retornos_hist group by 1,2
 
 <pre><code class="language-html">
 <html>
