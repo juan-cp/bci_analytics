@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo de Código con Prism.js</title>
+    <style>
+        /* Estilo para todos los encabezados h1, h2, h3, h4, h5, h6 */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Estilo para todos los párrafos <p> */
+        p {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <title>BCI ANALYTICS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
 </head>
 <body>
@@ -71,8 +82,39 @@ on rutero.ie_rut = a.ie_rut
 ) as tt
 group by 1,2
 </code></pre>
+<h3>Perfil Clusterizado</h3>
+<pre><code class="language-sql">
+    case when tt.Ic_perfil_inversionista in ('Otros','CP-esporadico','Delegador','Ahorro') then 'C1'
+when tt.Ic_perfil_inversionista = 'Transaccional' then 'C2'
+when tt.Ic_perfil_inversionista in ('Versatil','Inmobiliario/Diversificador','Fintech/Crypto','Internacional') then 'C3'
+when tt.Ic_perfil_inversionista ='Activo' then 'C4'
+when tt.Ic_perfil_inversionista = 'Nuevo' then 'Nuevos'
+else null end as perfil_inv
+</code></pre>
 
+<h3>AUM POTENCIAL CLIENTES</h3>
+<pre><code class="language-sql">
+  SELECT sub.id_rut as rut
+  , sub.ie_fecha_ref as fecha_ref
+  , max(sub.id_aum_potencial_miles) as id_aum_potencial_miles
+  from (
+        sel id_rut, ie_fecha_ref, id_aum_potencial_miles from MKT_CRM_ANALYTICS_TB.I_MAPA_SIN_INV_HIST
+        union 
+        sel id_rut, ie_fecha_ref, id_aum_potencial_miles from MKT_CRM_ANALYTICS_TB.I_MAPA_CON_INV_HIST
+  ) as sub
+  GROUP BY 1,2
 
+</code></pre>
+
+<h3>Otro</h3>
+<pre><code class="language-sql">
+  SELECT *
+
+</code></pre>
+
+<h1>&#128220; NOTAS</h1>
+<h2>&#128220; [yyyy-mm-dd] Titulo</h2>
+<p>Lorem ipsum</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
